@@ -1,34 +1,65 @@
-from fastapi import APIRouter, UploadFile, Form
+import os
+import tempfile
+import uuid
+import logging
+
+from fastapi import APIRouter, UploadFile, HTTPException
 from backend.chunking import get_chunker
 from backend.utils.parsing import parse_pdf, parse_txt
 from backend.utils.embeddings import embed_texts
-from backend.vectorstore.faiss_store import vector_store
+from backend.vectorstore.chroma_store import vector_store
 from backend.storage.document_store import doc_store
-import uuid
+from backend.retrieval.bm25_registry import bm25_registry
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
-# define all strategies to pre-compute
+# All strategies to pre-compute during upload
 ALL_STRATEGIES = ["fixed", "sentence", "semantic"]
+
 
 @router.post("/upload")
 async def upload(file: UploadFile):
+    if not file.filename:
+        raise HTTPException(status_code=400, detail="No file provided.")
+
     doc_id = str(uuid.uuid4())
-    path = f"/tmp/{doc_id}_{file.filename}"
 
-    with open(path, "wb") as f:
-        f.write(await file.read())
+    # Write to a secure temp file
+    suffix = os.path.splitext(file.filename)[1]
+    tmp = tempfile.NamedTemporaryFile(delete=False, suffix=suffix)
+    try:
+        content = await file.read()
+        if not content:
+            raise HTTPException(status_code=400, detail="Uploaded file is empty.")
+        tmp.write(content)
+        tmp.close()
 
-    if file.filename.endswith(".pdf"):
-        text = parse_pdf(path)
-    else:
-        text = parse_txt(path)
+        # Parse based on file type
+        if file.filename.lower().endswith(".pdf"):
+            text = parse_pdf(tmp.name)
+        else:
+            text = parse_txt(tmp.name)
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=422, detail=f"Failed to parse file: {e}")
+    finally:
+        if os.path.exists(tmp.name):
+            os.unlink(tmp.name)
 
     strategy_info = {}
 
     for strategy in ALL_STRATEGIES:
         chunker = get_chunker(strategy)
         chunks = chunker.chunk(text)
+
+        if not chunks:
+            logger.warning(f"Strategy '{strategy}' produced 0 chunks for {file.filename}")
+            strategy_info[strategy] = 0
+            continue
+
         embeddings = embed_texts(chunks)
 
         metadatas = [
@@ -36,19 +67,32 @@ async def upload(file: UploadFile):
                 "doc_id": doc_id,
                 "filename": file.filename,
                 "chunk_id": i,
-                "chunking_strategy": strategy
+                "chunk_index": i,
+                "chunking_strategy": strategy,
+                "source_filename": file.filename,
             }
             for i in range(len(chunks))
         ]
 
-        vector_store.add(embeddings, chunks, metadatas)
+        # Store in the strategy-specific ChromaDB collection
+        vector_store.add(
+            embeddings=embeddings,
+            texts=chunks,
+            metadatas=metadatas,
+            strategy=strategy,
+        )
+
+        # Index chunks with BM25 for hybrid retrieval
+        chunk_ids = [f"{doc_id}__{strategy}__{i}" for i in range(len(chunks))]
+        bm25_registry.add_documents(strategy, doc_id, chunks, chunk_ids)
+
         strategy_info[strategy] = len(chunks)
 
-    # add document to store
+    # Register document in metadata store
     doc_store.add(doc_id, file.filename)
 
     return {
         "document_id": doc_id,
         "filename": file.filename,
-        "chunks_per_strategy": strategy_info
+        "chunks_per_strategy": strategy_info,
     }

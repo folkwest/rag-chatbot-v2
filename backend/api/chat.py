@@ -1,13 +1,22 @@
-from fastapi import APIRouter
+import logging
+
+from fastapi import APIRouter, HTTPException
 from backend.schemas import ChatRequest, ChatResponse
 from backend.rag.pipeline import run_rag
-from backend.vectorstore.faiss_store import vector_store
+from backend.vectorstore.chroma_store import vector_store
+from backend.storage.document_store import doc_store
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
+
 @router.post("/chat", response_model=ChatResponse)
 def chat(req: ChatRequest):
-    # req.chunking_strategy can now be a list or single
+    # Validate document exists
+    if not doc_store.exists(req.document_id):
+        raise HTTPException(status_code=404, detail="Document not found.")
+
     strategies = req.chunking_strategy
     if isinstance(strategies, str):
         strategies = [strategies]
@@ -19,7 +28,8 @@ def chat(req: ChatRequest):
             req.question,
             vector_store,
             req.document_id,
-            chunking_strategy=strat
+            chunking_strategy=strat,
+            retrieval_strategy=req.retrieval_strategy,
         )
 
         sources = [
@@ -28,7 +38,8 @@ def chat(req: ChatRequest):
                 "score": r["score"],
                 "doc_id": r["metadata"]["doc_id"],
                 "filename": r["metadata"]["filename"],
-                "chunking_strategy": r["metadata"]["chunking_strategy"]
+                "chunking_strategy": r["metadata"]["chunking_strategy"],
+                "reranker_score": r.get("reranker_score"),
             }
             for r in retrieved
         ]
@@ -37,8 +48,7 @@ def chat(req: ChatRequest):
             "strategy": strat,
             "answer": answer,
             "confidence": confidence,
-            "sources": sources
+            "sources": sources,
         })
 
     return {"results": all_results}
-
