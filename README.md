@@ -14,6 +14,11 @@ persistent vector storage via ChromaDB, and strategy comparison. Upload document
 (PDF/TXT), select chunking strategies, and ask questions with full source
 attribution and confidence scoring.
 
+The project also includes a standalone **chunking evaluation pipeline** (`testing/eval/`)
+that benchmarks four chunking strategies against a fixed test corpus with ground-truth
+retrieval scoring — useful for empirically choosing the best chunking approach for
+different document types.
+
 ![Demo](assets/demo_gif_rag_chatbot.gif)
 
 ---
@@ -33,7 +38,7 @@ attribution and confidence scoring.
                        └──────────────┘
 ```
 
-**Vector collections** (one per chunking strategy):
+**App vector collections** (one per chunking strategy, used by the chatbot):
 - `chunks_fixed` — fixed character-length chunks
 - `chunks_sentence` — sentence-boundary chunks
 - `chunks_semantic` — embedding-similarity-based semantic chunks
@@ -45,11 +50,13 @@ attribution and confidence scoring.
 - **Persistent vector storage** via ChromaDB (Docker) — data survives restarts
 - **Per-strategy collections** — no cross-contamination between chunking methods
 - Upload multiple documents with structured metadata payloads
-- Three chunking strategies: `fixed`, `sentence`, `semantic`
+- Three app-level chunking strategies: `fixed`, `sentence`, `semantic`
+- Four eval-level chunking strategies: `fixed_size`, `recursive`, `semantic`, `section_aware`
 - Strategy comparison mode (side-by-side answers)
 - Confidence scoring and source attribution
 - Health endpoint (`GET /health`) for monitoring
 - Streamlit frontend with session state management
+- Standalone chunking evaluation pipeline with position-based ground-truth scoring
 
 ---
 
@@ -150,7 +157,9 @@ docker-compose.yml  # ChromaDB container
 
 ## Chunking Strategy Evaluation
 
-A self-contained evaluation pipeline under `testing/eval/` that quantitatively compares chunking strategies by measuring retrieval accuracy against known ground-truth locations.
+A self-contained evaluation pipeline under `testing/eval/` that quantitatively compares chunking strategies by measuring retrieval accuracy against known ground-truth locations. This pipeline is independent of the main chatbot app — it uses its own chunker implementations and does not require the FastAPI backend or ChromaDB to be running.
+
+The eval pipeline tests four strategies (fixed-size, recursive, semantic, section-aware) which overlap with but are not identical to the app's three strategies (fixed, sentence, semantic). The eval strategies are purpose-built for benchmarking with position-metadata tracking.
 
 ### What It Does
 

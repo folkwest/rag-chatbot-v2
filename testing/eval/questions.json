@@ -103,5 +103,110 @@
     "ground_truth_location": {
       "item_id": "Item 15"
     }
+  },
+  {
+    "question_id": "md_q4",
+    "question_text": "What HTTP method is used in the callback example, and what does the callback path look like relative to the original request?",
+    "document_id": "openapi-callbacks.md",
+    "ground_truth_location": {
+      "line_number_start": 44,
+      "line_number_end": 56
+    }
+  },
+  {
+    "question_id": "md_q5",
+    "question_text": "What is the difference between a webhook and the callback feature described in this doc?",
+    "document_id": "openapi-callbacks.md",
+    "ground_truth_location": {
+      "line_number_start": 1,
+      "line_number_end": 28
+    }
+  },
+  {
+    "question_id": "md_q6",
+    "question_text": "What does the callback_url parameter represent in the example function signature?",
+    "document_id": "openapi-callbacks.md",
+    "ground_truth_location": {
+      "line_number_start": 30,
+      "line_number_end": 42
+    }
+  },
+  {
+    "question_id": "pdf_q4",
+    "question_text": "What are the three types of attention layers used in the Transformer architecture, and where is each used?",
+    "document_id": "attention_is_all_you_need.pdf",
+    "ground_truth_location": {
+      "page_number_start": 5,
+      "page_number_end": 5
+    }
+  },
+  {
+    "question_id": "pdf_q5",
+    "question_text": "Why did the authors choose to use residual connections and layer normalization in each sub-layer?",
+    "document_id": "attention_is_all_you_need.pdf",
+    "ground_truth_location": {
+      "page_number_start": 3,
+      "page_number_end": 3
+    }
+  },
+  {
+    "question_id": "pdf_q6",
+    "question_text": "How does the computational complexity of self-attention compare to recurrent and convolutional layers, according to the paper?",
+    "document_id": "attention_is_all_you_need.pdf",
+    "ground_truth_location": {
+      "page_number_start": 6,
+      "page_number_end": 6
+    }
+  },
+  {
+    "question_id": "txt_q4",
+    "question_text": "What does Mr. Darcy's letter reveal about his role in separating Jane and Bingley?",
+    "document_id": "pride_and_prejudice.txt",
+    "ground_truth_location": {
+      "line_number_start": 7840,
+      "line_number_end": 7875
+    }
+  },
+  {
+    "question_id": "txt_q5",
+    "question_text": "How does Mrs. Bennet react to Mr. Collins' proposal to Elizabeth?",
+    "document_id": "pride_and_prejudice.txt",
+    "ground_truth_location": {
+      "line_number_start": 4740,
+      "line_number_end": 4820
+    }
+  },
+  {
+    "question_id": "txt_q6",
+    "question_text": "What does Elizabeth learn about Wickham's true character, and from whom?",
+    "document_id": "pride_and_prejudice.txt",
+    "ground_truth_location": {
+      "line_number_start": 7876,
+      "line_number_end": 7960
+    }
+  },
+  {
+    "question_id": "html_q4",
+    "question_text": "What is the fund's investment philosophy or business strategy?",
+    "document_id": "sec-filing.html",
+    "ground_truth_location": {
+      "item_id": "Item 15"
+    }
+  },
+  {
+    "question_id": "html_q5",
+    "question_text": "What legal proceedings, if any, does the fund disclose?",
+    "document_id": "sec-filing.html",
+    "ground_truth_location": {
+      "item_id": "Item 15"
+    }
+  },
+  {
+    "question_id": "html_q6",
+    "question_text": "What does the fund report regarding related-party transactions?",
+    "document_id": "sec-filing.html",
+    "ground_truth_location": {
+      "item_id": "Item 15"
+    }
   }
 ]
