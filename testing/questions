@@ -1,0 +1,32 @@
+
+FastAPI openapi-callbacks.md
+
+"What does the example callback code look like for the invoice router, and what does it do?" — needs code block kept together with its surrounding explanation.
+
+"What parameters does the callback path operation decorator take in the example, and why?" — tests whether a chunk boundary separates the code from the explanation of why those parameters are used.
+
+"How does the callback URL get parameterized using the request body?" — spans explanation + example, good test for whether adjacent chunks get retrieved together.
+
+Attention Is All You Need
+
+"What is the formula for scaled dot-product attention, and why is the scaling factor used?" — tests whether the equation and its justification (often in a separate sentence/paragraph) end up in the same chunk.
+
+"How does multi-head attention differ from single-head attention in terms of computation?" — spans a conceptual explanation plus the underlying math, good test of section-boundary handling.
+
+"What positional encoding method did the authors use, and why did they choose it over learned embeddings?" — tests retrieval across what's often two adjacent paragraphs (method description + justification/comparison).
+
+Pride and Prejudice
+
+"Why does Elizabeth initially refuse Darcy's first proposal?" — needs a full scene/exchange kept intact, not split mid-dialogue.
+
+"How does Elizabeth's opinion of Darcy shift after she reads his letter?" — spans two scenes (the proposal, then the letter), testing whether retrieval can pull both relevant chunks even if they're pages apart.
+
+"What role does Mr. Collins' proposal to Elizabeth play in the plot, and how does she respond?" — tests whether a comedic, dialogue-heavy scene stays coherent as a single retrievable unit.
+
+Biglari Holdings 10-K
+
+"What were total revenues and net earnings for the most recent fiscal year?" — tests whether a financial table is retrieved as an intact, correctly-parsed unit rather than fragmented rows.
+
+"What risk factors does the company identify related to its insurance operations?" — tests section-aware chunking (Risk Factors section should be cleanly delineated).
+
+"How does management explain the change in earnings from the prior year?" — tests MD&A section retrieval, which often references numbers from a table elsewhere in the doc

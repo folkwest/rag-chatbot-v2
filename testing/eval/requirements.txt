@@ -1,0 +1,10 @@
+# Runtime dependencies
+openai>=1.0.0
+PyMuPDF>=1.23.0
+beautifulsoup4>=4.12.0
+lxml>=4.9.0
+python-dotenv>=1.0.0
+
+# Test dependencies
+pytest>=7.4.0
+hypothesis>=6.92.0

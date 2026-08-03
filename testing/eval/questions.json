@@ -1,0 +1,107 @@
+[
+  {
+    "question_id": "md_q1",
+    "question_text": "What does the example callback code look like for the invoice router, and what does it do?",
+    "document_id": "openapi-callbacks.md",
+    "ground_truth_location": {
+      "line_number_start": 44,
+      "line_number_end": 56
+    }
+  },
+  {
+    "question_id": "md_q2",
+    "question_text": "What parameters does the callback path operation decorator take in the example, and why?",
+    "document_id": "openapi-callbacks.md",
+    "ground_truth_location": {
+      "line_number_start": 95,
+      "line_number_end": 110
+    }
+  },
+  {
+    "question_id": "md_q3",
+    "question_text": "How does the callback URL get parameterized using the request body?",
+    "document_id": "openapi-callbacks.md",
+    "ground_truth_location": {
+      "line_number_start": 111,
+      "line_number_end": 164
+    }
+  },
+  {
+    "question_id": "pdf_q1",
+    "question_text": "What is the formula for scaled dot-product attention, and why is the scaling factor used?",
+    "document_id": "attention_is_all_you_need.pdf",
+    "ground_truth_location": {
+      "page_number_start": 4,
+      "page_number_end": 4
+    }
+  },
+  {
+    "question_id": "pdf_q2",
+    "question_text": "How does multi-head attention differ from single-head attention in terms of computation?",
+    "document_id": "attention_is_all_you_need.pdf",
+    "ground_truth_location": {
+      "page_number_start": 4,
+      "page_number_end": 5
+    }
+  },
+  {
+    "question_id": "pdf_q3",
+    "question_text": "What positional encoding method did the authors use, and why did they choose it over learned embeddings?",
+    "document_id": "attention_is_all_you_need.pdf",
+    "ground_truth_location": {
+      "page_number_start": 5,
+      "page_number_end": 6
+    }
+  },
+  {
+    "question_id": "txt_q1",
+    "question_text": "Why does Elizabeth initially refuse Darcy's first proposal?",
+    "document_id": "pride_and_prejudice.txt",
+    "ground_truth_location": {
+      "line_number_start": 7535,
+      "line_number_end": 7726
+    }
+  },
+  {
+    "question_id": "txt_q2",
+    "question_text": "How does Elizabeth's opinion of Darcy shift after she reads his letter?",
+    "document_id": "pride_and_prejudice.txt",
+    "ground_truth_location": {
+      "line_number_start": 7992,
+      "line_number_end": 8147
+    }
+  },
+  {
+    "question_id": "txt_q3",
+    "question_text": "What role does Mr. Collins' proposal to Elizabeth play in the plot, and how does she respond?",
+    "document_id": "pride_and_prejudice.txt",
+    "ground_truth_location": {
+      "line_number_start": 4542,
+      "line_number_end": 4740
+    }
+  },
+  {
+    "question_id": "html_q1",
+    "question_text": "What were total revenues and net earnings for the most recent fiscal year?",
+    "document_id": "sec-filing.html",
+    "ground_truth_location": {
+      "item_id": "Item 15"
+    }
+  },
+  {
+    "question_id": "html_q2",
+    "question_text": "What concentrations of credit risk does the fund identify?",
+    "document_id": "sec-filing.html",
+    "ground_truth_location": {
+      "item_id": "Item 15"
+    }
+  },
+  {
+    "question_id": "html_q3",
+    "question_text": "How did partners capital change from the prior year and what were the net investment returns?",
+    "document_id": "sec-filing.html",
+    "ground_truth_location": {
+      "item_id": "Item 15"
+    }
+  }
+]
